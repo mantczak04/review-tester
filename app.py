@@ -14,10 +14,20 @@ from github_client import (
 )
 from llm_client import AVAILABLE_MODELS, run_review
 
-load_dotenv()
+load_dotenv()  # no-op on Streamlit Cloud, useful locally
+
+
+def _get_secret(key: str) -> str:
+    """Read from st.secrets first (Streamlit Cloud), fall back to env var (.env)."""
+    try:
+        return st.secrets[key]
+    except (KeyError, FileNotFoundError):
+        return os.getenv(key, "")
+
 
 PROMPTS_DIR = pathlib.Path(__file__).parent / "prompts"
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+GITHUB_TOKEN = _get_secret("GITHUB_TOKEN")
+GEMINI_API_KEY = _get_secret("GEMINI_API_KEY")
 
 # ---------------------------------------------------------------------------
 # Page config
@@ -207,7 +217,7 @@ with left_col:
         diff_payload = build_diff_payload(st.session_state.pr_files)
         with st.spinner("Sending to Gemini…"):
             try:
-                result = run_review(edited_prompt, diff_payload, selected_model)
+                result = run_review(edited_prompt, diff_payload, selected_model, GEMINI_API_KEY)
                 st.session_state.review_result = result
             except Exception as e:
                 st.error(f"LLM error: {e}")

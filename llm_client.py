@@ -7,12 +7,11 @@ from google import genai
 
 AVAILABLE_MODELS = [
     "gemini-flash-latest",
-    "gemini-3.1-pro-preview",
-    "gemini-2.5-flash-lite",
+    "gemini-3.1-pro-preview"
 ]
 
 
-def run_review(prompt: str, diff_payload: str, model: str) -> dict:
+def run_review(prompt: str, diff_payload: str, model: str, api_key: str = "") -> dict:
     """Send the master prompt (with diff inserted) to Gemini and return parsed JSON.
 
     The prompt must contain a ``{DIFF}`` placeholder that will be replaced with
@@ -27,7 +26,7 @@ def run_review(prompt: str, diff_payload: str, model: str) -> dict:
     """
     full_prompt = prompt.replace("{DIFF}", diff_payload)
 
-    client = genai.Client()  # reads GEMINI_API_KEY from env
+    client = genai.Client(api_key=api_key or None)  # api_key=None falls back to GEMINI_API_KEY env var
     response = client.models.generate_content(model=model, contents=full_prompt)
 
     text = response.text.strip()
