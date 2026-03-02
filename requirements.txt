@@ -2,4 +2,3 @@ streamlit>=1.30
 st-diff-viewer
 google-genai
 requests
-python-dotenv

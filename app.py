@@ -1,10 +1,8 @@
 """Review-Tester – Streamlit app for testing LLM code-review prompts."""
 
-import os
 import pathlib
 
 import streamlit as st
-from dotenv import load_dotenv
 
 from github_client import (
     get_file_content,
@@ -14,22 +12,9 @@ from github_client import (
 )
 from llm_client import AVAILABLE_MODELS, run_review
 
-load_dotenv()  # no-op on Streamlit Cloud, useful locally
-
-
-def _get_secret(key: str) -> str:
-    """Read from st.secrets first (Streamlit Cloud), fall back to env var (.env)."""
-    print(st.secrets["GITHUB_TOKEN"])  # Debug print to verify secrets access
-    print(st.secrets["GEMINI_API_KEY"])  # Debug print to verify secrets access
-    try:
-        return st.secrets[key]
-    except (KeyError, FileNotFoundError):
-        return os.getenv(key, "")
-
-
 PROMPTS_DIR = pathlib.Path(__file__).parent / "prompts"
-GITHUB_TOKEN = _get_secret("GITHUB_TOKEN")
-GEMINI_API_KEY = _get_secret("GEMINI_API_KEY")
+GITHUB_TOKEN = st.secrets["GITHUB_TOKEN"]
+GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 
 # ---------------------------------------------------------------------------
 # Page config
