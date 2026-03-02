@@ -127,6 +127,16 @@ st.divider()
 # ---------------------------------------------------------------------------
 left_col, right_col = st.columns([1, 3], gap="large")
 
+
+def check_secrets():
+    if not st.secrets:
+        st.error("Secrets są puste!")
+    else:
+        st.success("Secrets załadowane")
+        st.write("Dostępne klucze:", list(st.secrets.keys()))
+
+check_secrets()
+
 # ---- LEFT COLUMN ----
 with left_col:
     st.markdown("### Prompt")
