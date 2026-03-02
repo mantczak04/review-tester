@@ -109,6 +109,7 @@ if pr_url and pr_url != st.session_state.fetched_url:
             st.session_state.review_result = None
             st.session_state.fetched_url = pr_url
         except Exception as e:
+            print(st.secrets["GITHUB_TOKEN"])
             st.error(f"Failed to fetch PR: {e}")
 
 # Show PR title
