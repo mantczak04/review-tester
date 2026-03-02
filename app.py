@@ -20,10 +20,6 @@ GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 # Page config
 # ---------------------------------------------------------------------------
 st.set_page_config(page_title="Review Tester", layout="wide")
-
-# Debug: Show available secrets
-st.write("**🔑 Secrets:**", list(st.secrets.keys()) if st.secrets else "❌ Not loaded")
-st.write(st.secrets["GITHUB_TOKEN"])
 # ---------------------------------------------------------------------------
 # Session-state defaults
 # ---------------------------------------------------------------------------
