@@ -19,6 +19,8 @@ load_dotenv()  # no-op on Streamlit Cloud, useful locally
 
 def _get_secret(key: str) -> str:
     """Read from st.secrets first (Streamlit Cloud), fall back to env var (.env)."""
+    print(st.secrets["GITHUB_TOKEN"])  # Debug print to verify secrets access
+    print(st.secrets["GEMINI_API_KEY"])  # Debug print to verify secrets access
     try:
         return st.secrets[key]
     except (KeyError, FileNotFoundError):
