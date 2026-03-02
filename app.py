@@ -21,6 +21,9 @@ GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 # ---------------------------------------------------------------------------
 st.set_page_config(page_title="Review Tester", layout="wide")
 
+# Debug: Show available secrets
+st.write("**🔑 Secrets:**", list(st.secrets.keys()) if st.secrets else "❌ Not loaded")
+
 # ---------------------------------------------------------------------------
 # Session-state defaults
 # ---------------------------------------------------------------------------
@@ -109,7 +112,6 @@ if pr_url and pr_url != st.session_state.fetched_url:
             st.session_state.review_result = None
             st.session_state.fetched_url = pr_url
         except Exception as e:
-            print(st.secrets["GITHUB_TOKEN"])
             st.error(f"Failed to fetch PR: {e}")
 
 # Show PR title
@@ -126,16 +128,6 @@ st.divider()
 # MAIN LAYOUT: left sidebar (prompt + model) | right area (diffs + comments)
 # ---------------------------------------------------------------------------
 left_col, right_col = st.columns([1, 3], gap="large")
-
-
-def check_secrets():
-    if not st.secrets:
-        st.error("Secrets są puste!")
-    else:
-        st.success("Secrets załadowane")
-        st.write("Dostępne klucze:", list(st.secrets.keys()))
-
-check_secrets()
 
 # ---- LEFT COLUMN ----
 with left_col:
